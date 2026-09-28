@@ -1,6 +1,5 @@
 apiVersion: apps/v1
 kind: Deployment
-
 metadata:
   name: app1
   # Deployment labels
@@ -8,18 +7,14 @@ metadata:
     purpose: ingress
     project: roboshop
     app: app1
-
 spec:
   replicas: 2
-
-  # These labels are used by ReplicaSet to select Pods.
-  # They must match the Pod template labels.
+ # These are the labels replica set use to create pod replicas, this should match pod labels
   selector:
     matchLabels:
       purpose: ingress
       project: roboshop
       app: app1
-
   # Pod definition
   template:
     metadata:
@@ -38,13 +33,13 @@ metadata:
   name: app1
   labels:
     purpose: ingress
-
+    project: roboshop
+    app: app1
 spec:
   selector:
     purpose: ingress
     project: roboshop
     app: qpp1
-
   ports:
     - protocol: TCP
       port: 80 # service port
@@ -59,7 +54,9 @@ metadata:
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:211125615103:certificate/9feeeedc-2044-437f-8b9c-fe66761b7f65
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/group.name: shivapaturi01
 spec:
+  ingressClassName: alb
   rules:
   - host: "app1.mydaws.site"
     http:
