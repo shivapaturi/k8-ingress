@@ -2,20 +2,17 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: app1
-  # Deployment labels
   labels:
     purpose: ingress
     project: roboshop
     app: app1
 spec:
   replicas: 2
- # These are the labels replica set use to create pod replicas, this should match pod labels
   selector:
     matchLabels:
       purpose: ingress
       project: roboshop
       app: app1
-  # Pod definition
   template:
     metadata:
       labels:
@@ -39,17 +36,17 @@ spec:
   selector:
     purpose: ingress
     project: roboshop
-    app: qpp1
+    app: app1
   ports:
     - protocol: TCP
-      port: 80 # service port
-      targetPort: 80  #container port
+      port: 80
+      targetPort: 80
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: app1
-    annotations:
+  annotations:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:211125615103:certificate/9feeeedc-2044-437f-8b9c-fe66761b7f65
     alb.ingress.kubernetes.io/scheme: internet-facing
@@ -67,5 +64,4 @@ spec:
           service:
             name: app1
             port:
-              number: 80 # app1 service port
- 
+              number: 80
